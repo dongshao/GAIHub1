@@ -1,402 +1,332 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>智能软件教学科研 GAI Token服务中枢 · 使用说明</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>智能软件教学科研 GAI Token Hub · 使用指南</title>
+    <style>
   :root{
-    --bg:#0a0e14;
-    --bg-soft:#0f1620;
-    --bg-elev:#131c28;
-    --line:rgba(140,170,200,.12);
-    --line-strong:rgba(140,170,200,.22);
-    --text:#e7eef6;
-    --dim:#9bacbe;
-    --faint:#5f6f80;
-    --accent:#3ce0cf;
-    --accent-deep:#1aa896;
-    --warn:#f5b454;
-    --danger:#ff7a7a;
-    --code-bg:#070b11;
-    --font-sans:"IBM Plex Sans SC","PingFang SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif;
-    --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-    --maxw:980px;
+    color-scheme: dark;
+    --bg: #08090d;
+    --bg-panel: #12131a;
+    --border: rgba(255,255,255,0.08);
+    --text: #e7e8ee;
+    --text-dim: #8b8d9a;
+    --text-dimmer: #5f6170;
+    --purple: #8b5cf6;
+    --blue: #5b8cff;
+    --pink: #ec4899;
+    --amber: #f5b942;
+    --green: #34d399;
+
+    /* 随主题切换的表面色与强调色 */
+    --glow-1: rgba(139,92,246,0.10);
+    --glow-2: rgba(91,140,255,0.08);
+    --badge-bg: rgba(139,92,246,0.10);
+    --badge-border: rgba(139,92,246,0.35);
+    --badge-text: #c9b8ff;
+    --warn-bg: rgba(245,185,66,0.08);
+    --warn-border: rgba(245,185,66,0.30);
+    --warn-text: #e9d9b8;
+    --warn-strong: #f5b942;
+    --inline-code-bg: rgba(255,255,255,0.07);
+    --inline-code-text: #a8d8ff;
+    --btn-ghost-bg: rgba(255,255,255,0.04);
+    --link: #9db9ff;
+    /* 代码卡片在两种模式下都保持深色 */
+    --code-border: rgba(255,255,255,0.08);
   }
-
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  html.js .reveal{opacity:0;transform:translateY(22px)}
-  html.js .reveal.visible{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
-
+  @media (prefers-color-scheme: light){
+    :root{
+      color-scheme: light;
+      --bg: #f6f7fb;
+      --bg-panel: #ffffff;
+      --border: rgba(18,20,40,0.10);
+      --text: #191b24;
+      --text-dim: #565b6d;
+      --text-dimmer: #8b8f9e;
+      --glow-1: rgba(139,92,246,0.14);
+      --glow-2: rgba(91,140,255,0.12);
+      --badge-bg: rgba(139,92,246,0.10);
+      --badge-border: rgba(139,92,246,0.30);
+      --badge-text: #6d28d9;
+      --warn-bg: rgba(245,185,66,0.14);
+      --warn-border: rgba(214,158,46,0.45);
+      --warn-text: #86540a;
+      --warn-strong: #b45309;
+      --inline-code-bg: rgba(18,20,40,0.05);
+      --inline-code-text: #2563eb;
+      --btn-ghost-bg: rgba(18,20,40,0.03);
+      --link: #4f6fe0;
+    }
+    h1 .grad{
+      background: linear-gradient(90deg, #7c3aed 0%, #2563eb 55%, #0d9488 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
   body{
-    font-family:var(--font-sans);
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.78;
-    font-size:16.5px;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-    position:relative;
-  }
-  /* 细网格 + 噪点底纹，营造控制台氛围 */
-  body::before{
-    content:"";position:fixed;inset:0;z-index:-2;
-    background:
-      radial-gradient(900px 520px at 78% -8%,rgba(60,224,207,.10),transparent 60%),
-      radial-gradient(760px 460px at 8% 4%,rgba(74,150,255,.07),transparent 55%),
-      linear-gradient(var(--bg),var(--bg));
-  }
-  body::after{
-    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.55;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", Arial, sans-serif;
+    overflow: hidden;
     background-image:
-      linear-gradient(rgba(140,170,200,.045) 1px,transparent 1px),
-      linear-gradient(90deg,rgba(140,170,200,.045) 1px,transparent 1px);
-    background-size:46px 46px;
-    mask-image:radial-gradient(circle at 50% 30%,#000 30%,transparent 88%);
+      radial-gradient(ellipse 900px 600px at 8% 8%, var(--glow-1), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 96% 88%, var(--glow-2), transparent 60%);
+  }
+  .page{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 2.2vh 3.4vw;
   }
 
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
-
-  /* ── 顶部导航 ── */
-  .topbar{
-    position:sticky;top:0;z-index:50;
-    backdrop-filter:blur(12px);
-    background:rgba(10,14,20,.72);
-    border-bottom:1px solid var(--line);
+  /* ---------- header ---------- */
+  header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.8vh;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
   }
-  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
-  .brand{display:flex;align-items:center;gap:11px;font-family:var(--font-mono);font-size:13px;letter-spacing:.04em}
-  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(60,224,207,.16);animation:pulse 2.6s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
-  .brand b{color:var(--text);font-weight:600}
-  .navlinks{display:flex;gap:26px;font-family:var(--font-mono);font-size:12.5px}
-  .navlinks a{color:var(--dim);text-decoration:none;transition:color .2s;position:relative}
-  .navlinks a:hover{color:var(--accent)}
-  @media(max-width:760px){.navlinks{display:none}}
-
-  /* ── HERO ── */
-  header.hero{padding:96px 0 72px;position:relative}
-  .plate{
-    display:inline-flex;align-items:center;gap:10px;
-    font-family:var(--font-mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
-    color:var(--accent);border:1px solid var(--line-strong);border-radius:999px;
-    padding:7px 16px;margin-bottom:30px;background:rgba(60,224,207,.05);
+  .brand{ display:flex; align-items:center; gap: 12px; }
+  .logo{ width: 30px; height: 30px; flex-shrink:0; }
+  .brand-name{ font-size: 15px; font-weight: 600; letter-spacing: 0.2px; color: var(--text); }
+  .brand-name b{ font-weight: 700; background: linear-gradient(90deg,#c4b5fd,#93c5fd); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .header-tag{
+    font-size: 12px; color: var(--text-dimmer);
+    border: 1px solid var(--border); border-radius: 100px;
+    padding: 4px 12px; letter-spacing: 0.5px;
   }
-  .plate::before{content:"◇";color:var(--accent)}
-  .hero h1{
-    font-size:clamp(34px,6vw,62px);line-height:1.08;font-weight:600;letter-spacing:-.01em;
-    margin-bottom:18px;
+
+  /* ---------- main layout ---------- */
+  main{
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 4vw;
+    align-items: center;
+    min-height: 0;
+    padding-top: 1vh;
   }
-  .hero h1 .en{
-    display:block;font-family:var(--font-mono);font-weight:400;
-    font-size:clamp(14px,2.2vw,20px);letter-spacing:.18em;color:var(--accent);
-    margin-top:16px;text-transform:uppercase;
+
+  .left{ display:flex; flex-direction:column; gap: 1.7vh; min-width:0; }
+
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; width:fit-content;
+    font-size: 12.5px; color: var(--badge-text);
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    border-radius: 100px; padding: 5px 13px 5px 10px;
   }
-  .hero .lead{font-size:clamp(17px,2.4vw,21px);color:var(--dim);max-width:640px;font-weight:300}
-  .meta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:38px;align-items:center}
-  .chip{
-    display:inline-flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:13px;
-    padding:9px 15px;border:1px solid var(--line-strong);border-radius:10px;background:var(--bg-soft);color:var(--dim);
+  .badge .dot{ width:6px; height:6px; border-radius:50%; background: var(--purple); box-shadow: 0 0 8px var(--purple); }
+
+  h1{
+    font-size: clamp(26px, 3.1vw, 40px);
+    line-height: 1.28;
+    font-weight: 700;
+    letter-spacing: -0.5px;
   }
-  .chip.addr a{color:var(--accent);text-decoration:none}
-  .chip.addr a:hover{text-decoration:underline}
-  .chip .live{width:8px;height:8px;border-radius:50%;background:#43d17a;box-shadow:0 0 8px #43d17a}
-
-  /* ── 区块通用 ── */
-  section{padding:54px 0;border-top:1px solid var(--line)}
-  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}
-  .sec-num{font-family:var(--font-mono);font-size:13px;color:var(--accent);letter-spacing:.1em}
-  .sec-head h2{font-size:clamp(23px,3.4vw,31px);font-weight:600;letter-spacing:-.01em}
-  p{color:var(--dim);margin-bottom:16px}
-  p strong,li strong{color:var(--text);font-weight:600}
-  .accent{color:var(--accent)}
-
-  /* 价值三卡 */
-  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
-  @media(max-width:760px){.cards{grid-template-columns:1fr}}
-  .card{
-    background:linear-gradient(180deg,var(--bg-elev),var(--bg-soft));
-    border:1px solid var(--line);border-radius:16px;padding:26px 24px;position:relative;overflow:hidden;
-    transition:border-color .3s,transform .3s;
+  h1 .grad{
+    background: linear-gradient(90deg, #a78bfa 0%, #7dabff 55%, #67d6d0 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s}
-  .card:hover{border-color:var(--line-strong);transform:translateY(-4px)}
-  .card:hover::before{opacity:.7}
-  .card .ic{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:.12em;margin-bottom:16px}
-  .card h3{font-size:18px;margin-bottom:9px;font-weight:600}
-  .card p{font-size:14.5px;margin:0;line-height:1.7}
 
-  /* 步骤 */
-  .step{display:grid;grid-template-columns:64px 1fr;gap:24px;padding:30px 0;border-bottom:1px dashed var(--line)}
-  .step:last-child{border-bottom:none}
-  .step .no{font-family:var(--font-mono);font-size:40px;font-weight:300;color:var(--accent);line-height:1;opacity:.85}
-  .step h3{font-size:19px;font-weight:600;margin-bottom:10px}
-  @media(max-width:560px){.step{grid-template-columns:1fr;gap:10px}.step .no{font-size:30px}}
-
-  a.inline{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(60,224,207,.35)}
-  a.inline:hover{border-bottom-color:var(--accent)}
-
-  /* callout 引用 */
-  blockquote{
-    border-left:3px solid var(--accent-deep);background:rgba(60,224,207,.045);
-    padding:14px 20px;border-radius:0 10px 10px 0;margin:18px 0;color:var(--dim);font-size:15px;
+  .lede{
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: var(--text-dim);
+    max-width: 56ch;
   }
-  blockquote code{color:var(--accent)}
-  code{font-family:var(--font-mono);font-size:.9em;background:rgba(140,170,200,.12);padding:2px 7px;border-radius:5px;color:#cfe0ee}
+  .lede b{ color: var(--text); font-weight: 600; }
 
-  /* 代码块 */
-  .code{margin:18px 0;border:1px solid var(--line-strong);border-radius:12px;overflow:hidden;background:var(--code-bg)}
-  .code-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--line)}
-  .code-bar .lang{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
-  .code-bar .dots{display:flex;gap:7px}
-  .code-bar .dots i{width:11px;height:11px;border-radius:50%;display:block;background:#2a3441}
-  .copy{font-family:var(--font-mono);font-size:11.5px;color:var(--dim);background:transparent;border:1px solid var(--line-strong);border-radius:7px;padding:5px 11px;cursor:pointer;transition:all .2s}
-  .copy:hover{color:var(--accent);border-color:var(--accent-deep)}
-  .copy.done{color:#43d17a;border-color:#43d17a}
-  pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.75;color:#d3deea}
-  pre .c{color:var(--faint);font-style:italic}
-  pre .s{color:#8fe3c9}
-  pre .k{color:var(--warn)}
-  pre .fn{color:var(--accent)}
+  .steps{ display:flex; flex-direction:column; gap: 10px; margin-top: 2px; }
+  .step{
+    display:flex; gap: 12px; align-items:flex-start;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .step .num{
+    flex-shrink:0; width: 20px; height: 20px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    color: #fff; font-size: 11.5px; font-weight: 700;
+    display:flex; align-items:center; justify-content:center;
+    margin-top: 1px;
+  }
+  .step .body{ font-size: 13.5px; line-height: 1.6; color: var(--text-dim); }
+  .step .body b{ color: var(--text); font-weight: 600; }
+  .step code{
+    background: var(--inline-code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: var(--inline-code-text);
+  }
 
-  /* 表格 */
-  .tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin-top:8px}
-  table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:520px}
-  th,td{text-align:left;padding:13px 18px;border-bottom:1px solid var(--line)}
-  thead th{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:rgba(60,224,207,.04)}
-  tbody tr:last-child td{border-bottom:none}
-  tbody tr:hover{background:rgba(140,170,200,.04)}
-  td code{font-size:12.5px}
+  .warn{
+    display:flex; gap: 10px; align-items:flex-start;
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .warn .icon{ color: var(--warn-strong); font-size: 15px; line-height: 1.5; flex-shrink:0; }
+  .warn .body{ font-size: 13.5px; line-height: 1.6; color: var(--warn-text); }
+  .warn b{ color: var(--warn-strong); font-weight: 700; }
 
-  /* 列表 */
-  ul.feat{list-style:none;margin-top:10px}
-  ul.feat li{position:relative;padding:11px 0 11px 30px;border-bottom:1px solid var(--line);color:var(--dim);font-size:15px}
-  ul.feat li:last-child{border-bottom:none}
-  ul.feat li::before{content:"▹";position:absolute;left:4px;color:var(--accent);font-size:14px}
+  .actions{ display:flex; align-items:center; gap: 12px; margin-top: 4px; flex-wrap: wrap; }
+  .btn{
+    font-size: 13.5px; font-weight: 600;
+    padding: 10px 20px; border-radius: 9px;
+    text-decoration: none;
+    display:inline-flex; align-items:center; gap:7px;
+    transition: transform .15s ease, opacity .15s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); }
+  .btn-ghost{
+    background: var(--btn-ghost-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .feedback-note{ font-size: 12px; color: var(--text-dimmer); }
+  .feedback-note a{ color: var(--link); text-decoration:none; }
 
-  /* 安全规范区 */
-  .guard{background:linear-gradient(180deg,rgba(245,180,84,.05),rgba(245,180,84,.01));border:1px solid rgba(245,180,84,.22)}
-  .guard .sec-num,.guard ul.feat li::before{color:var(--warn)}
-  .guard ul.feat li strong{color:var(--warn)}
+  /* ---------- right code panel ---------- */
+  .right{ height:100%; display:flex; align-items:center; min-width:0; }
+  .code-card{
+    width: 100%;
+    background: #0d0e14;
+    border: 1px solid var(--code-border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.02);
+  }
+  .code-tabs{
+    display:flex; align-items:center; gap: 22px;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--code-border);
+    font-size: 13px;
+  }
+  .code-tabs .tab{ color: var(--text-dimmer); }
+  .code-tabs .tab.active{ color: #fff; font-weight: 600; position:relative; }
+  .code-tabs .tab.active::after{
+    content:""; position:absolute; left:0; right:0; bottom:-13px; height:2px;
+    background: linear-gradient(90deg, var(--purple), var(--blue));
+  }
+  .code-tabs .status{
+    margin-left:auto; display:flex; align-items:center; gap:6px;
+    font-size: 12px; color: var(--green); font-family: "SF Mono", Menlo, Consolas, monospace;
+  }
+  .code-tabs .status .dot{ width:6px; height:6px; border-radius:50%; background: var(--green); box-shadow:0 0 6px var(--green); }
 
-  /* 帮助卡 */
-  .help{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px}
-  @media(max-width:760px){.help{grid-template-columns:1fr}}
-  .help .h{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:20px}
-  .help .h .t{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:.08em;margin-bottom:8px}
-  .help .h p{font-size:14px;margin:0}
-  .todo{color:var(--faint);font-style:italic}
+  .code-body{ padding: 16px 20px 8px; }
+  .code-label{ font-size: 10.5px; letter-spacing: 1.5px; color: var(--text-dimmer); margin-bottom: 8px; }
+  .code-block{
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12.3px; line-height: 1.72;
+    white-space: pre;
+  }
+  .tok-method{ color: #67d6d0; }
+  .tok-url{ color: #f5b942; }
+  .tok-flag{ color: #7dabff; }
+  .tok-str{ color: #f5b942; }
+  .tok-key{ color: #a78bfa; }
+  .tok-punct{ color: var(--text-dimmer); }
+  .tok-num{ color: #67d6d0; }
+  .tok-bool{ color: #ec4899; }
+  .tok-comment{ color: var(--text-dimmer); }
 
-  footer{padding:48px 0 60px;border-top:1px solid var(--line);text-align:center}
-  footer .f-en{font-family:var(--font-mono);font-size:12px;letter-spacing:.2em;color:var(--faint);text-transform:uppercase}
-  footer .f-zh{color:var(--dim);margin-top:10px;font-size:14px}
+  .code-divider{ height:1px; background: var(--code-border); margin: 14px 0 0; }
+
+  .code-footer{
+    display:flex; align-items:center; gap: 16px;
+    padding: 11px 20px; border-top: 1px solid var(--code-border);
+    font-size: 11.5px; color: var(--text-dimmer);
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+  }
+  .code-footer .sep{ color: rgba(255,255,255,0.15); }
+  .code-footer .right-tag{ margin-left:auto; letter-spacing: 1px; }
 </style>
-</head>
-<body>
-
-<!-- 顶部导航已移除：New API 在 iframe 外层已自带顶栏，避免重叠 -->
-<header class="hero">
-  <div class="wrap">
-    <span class="plate reveal">Software&nbsp;Institute,&nbsp;School&nbsp;of&nbsp;Intelligent&nbsp;Software</span>
-    <h1 class="reveal">智能软件教学科研<br>GAI Token服务中枢
-      <span class="en">GAI Token Service Hub</span>
-    </h1>
-    <p class="lead reveal">为全院师生提供统一、合规、可管控的生成式 AI（GAI）服务，一次接入，统一调度。</p>
-    <div class="meta-row reveal">
-      <span class="chip"><span class="live"></span>系统运行中</span>
-      <span class="chip addr">入口 · <a href="http://47.83.118.57:3000/" target="_blank" rel="noopener">47.83.118.57:3000</a></span>
-      <span class="chip">兼容 OpenAI API</span>
-    </div>
-  </div>
-</header>
-
-<main>
-
-  <!-- 简介 -->
-  <section id="about">
-    <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-num">01</span><h2>这是什么</h2></div>
-      <p class="reveal">本中枢是学院统一建设的<strong>生成式人工智能（GAI）服务平台</strong>。它把多家厂商的大模型（对话、代码、推理、向量等能力）汇聚到一个入口，按账号分配访问令牌（Token）与使用额度，供全院师生用于<strong>教学、科研与创新实践</strong>。</p>
-      <p class="reveal">过去，老师和同学各自申请、各自付费购买不同平台的 API，存在额度浪费、难以管控、敏感数据外流等问题。中枢的目标是<strong class="accent">一次接入、统一调度</strong>：</p>
-      <div class="cards">
-        <div class="card reveal">
-          <div class="ic">// 01</div>
-          <h3>一个入口</h3>
-          <p>用一套地址和令牌即可调用多种模型，无需分别注册各家平台。</p>
-        </div>
-        <div class="card reveal">
-          <div class="ic">// 02</div>
-          <h3>一份额度</h3>
-          <p>学院统一采购、按需分配，用量公开透明，可在控制台随时查看。</p>
-        </div>
-        <div class="card reveal">
-          <div class="ic">// 03</div>
-          <h3>一道防线</h3>
-          <p>调用集中经过学院网关，便于审计与合规管理，降低数据外流风险。</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 快速开始 -->
-  <section id="start">
-    <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-num">02</span><h2>三步开始使用</h2></div>
-
-      <div class="step reveal">
-        <div class="no">01</div>
-        <div>
-          <h3>登录系统</h3>
-          <p>访问 <a class="inline" href="http://47.83.118.57:3000/" target="_blank" rel="noopener">http://47.83.118.57:3000/</a>，使用学院指定的用户名和密码登录。</p>
-        </div>
-      </div>
-
-      <div class="step reveal">
-        <div class="no">02</div>
-        <div>
-          <h3>创建你的访问令牌（API Token）</h3>
-          <p>登录后进入 <strong>「令牌」(Token)</strong> 页面，点击「添加令牌」。可为每个用途单独创建一个令牌（例如「课程作业」「毕业设计」「科研项目」各一个），并按需设置<strong>额度上限</strong>和<strong>过期时间</strong>。</p>
-          <blockquote>令牌格式形如 <code>sk-xxxxxxxxxxxxxxxxxxxx</code>，<strong style="color:var(--text)">等同于你的账号密码</strong>，请妥善保管。</blockquote>
-        </div>
-      </div>
-
-      <div class="step reveal">
-        <div class="no">03</div>
-        <div>
-          <h3>发起调用</h3>
-          <p>本中枢完全<strong>兼容 OpenAI API 格式</strong>。你只需把原有代码里的请求地址（<code>base_url</code>）指向中枢，把密钥换成你的令牌即可，其余代码无需改动。</p>
-
-          <div class="code">
-            <div class="code-bar">
-              <div class="dots"><i></i><i></i><i></i></div>
-              <span class="lang">Python · OpenAI SDK</span>
-              <button class="copy" onclick="copyCode(this)">复制</button>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="brand">
+          <svg class="logo" viewBox="0 0 32 32" fill="none">
+            <defs>
+              <linearGradient id="lg" x1="0" y1="0" x2="32" y2="32">
+                <stop offset="0%" stop-color="#ec4899"></stop>
+                <stop offset="50%" stop-color="#8b5cf6"></stop>&nbsp; </linearGradient></defs></svg><span
+            class="brand-name"></span> </div>
+        <br>
+      </header>
+      <main>
+        <div class="left"> <span class="badge"><span class="dot"></span>面
+            向教学科研的统一大模型 API 平台</span>
+          <h1>三步获取密钥，<br>
+            <span class="grad">接入大语言模型</span></h1>
+          <p class="lede"> 为方便统一管理大模型 API 与配额，<b>南京大学软件学院、智能软件与工程学院</b>
+            基于开源软件 New API 部 署了本平台，为同学们分配独立的 API
+            密钥，支持调用多种主流大语言模型，用于教学与科研实验。 </p>
+          <div class="steps">
+            <div class="step"> <span class="num">1</span> <span
+                class="body"><b>API 端点地址</b>&nbsp;— 所有同学共用统一 Base URL：<code>https://njusehub.info/v1</code></span>
             </div>
-<pre><span class="k">from</span> openai <span class="k">import</span> OpenAI
-
-client = <span class="fn">OpenAI</span>(
-    base_url=<span class="s">"http://47.83.118.57:3000/v1"</span>,   <span class="c"># 指向本中枢</span>
-    api_key=<span class="s">"sk-你的令牌"</span>,                <span class="c"># 切勿硬编码，建议读环境变量</span>
-)
-
-resp = client.chat.completions.<span class="fn">create</span>(
-    model=<span class="s">"模型名，如 gpt-4o-mini"</span>,
-    messages=[{<span class="s">"role"</span>: <span class="s">"user"</span>, <span class="s">"content"</span>: <span class="s">"你好，请做个自我介绍"</span>}],
-)
-<span class="fn">print</span>(resp.choices[<span class="k">0</span>].message.content)</pre>
+            <div class="step"> <span class="num">2</span> <span
+                class="body"><b>API 密钥</b>&nbsp;— 登录控制台后在「API
+                密钥管理」页面创建，用于身份认证与用量统计</span> </div>
+            <div class="step"> <span class="num">3</span> <span
+                class="body"><b>模型 ID</b>&nbsp;— 在「模型广场」页面浏览可用模型并记录 ID，如
+                <code>glm-5.2</code>，需与客户端配置一致</span> </div>
           </div>
-
-          <div class="code">
-            <div class="code-bar">
-              <div class="dots"><i></i><i></i><i></i></div>
-              <span class="lang">cURL</span>
-              <button class="copy" onclick="copyCode(this)">复制</button>
-            </div>
-<pre><span class="fn">curl</span> http://47.83.118.57:3000/v1/chat/completions \
-  -H <span class="s">"Authorization: Bearer sk-你的令牌"</span> \
-  -H <span class="s">"Content-Type: application/json"</span> \
-  -d <span class="s">'{
-    "model": "模型名",
-    "messages": [{"role": "user", "content": "你好"}]
-  }'</span></pre>
+          <div class="warn"> <span class="icon">⚠</span> <span
+              class="body"><b>务必保管好你的 API 密钥</b>，切记不要将其上传至 GitHub 等外部平台。</span>
+          </div>
+          <div class="actions"> <a class="btn btn-ghost"
+              href="mailto:zengsheng@nju.edu.cn">问题反馈</a> <span
+              class="feedback-note">配置遇到问题？可先借助 Agent 排查；确认是后台问题请联系 <a
+                href="mailto:zengsheng@nju.edu.cn">zengsheng@nju.edu.cn</a></span>
           </div>
         </div>
-      </div>
+        <div class="right">
+          <div class="code-card">
+            <div class="code-tabs"> <span class="tab active">Chat</span>
+              <span class="tab">Embeddings</span> <span class="tab">Models</span>
+              <span class="status"><span class="dot"></span>200 OK</span>
+            </div>
+            <div class="code-body">
+              <div class="code-label">REQUEST</div>
+              <div class="code-block"><span class="tok-method">curl</span> -X <span class="tok-flag">POST</span> <span class="tok-str">"https://njusehub.info/v1/chat/completions"</span> \
+  -H <span class="tok-str">"Authorization: Bearer sk-••••••••"</span> \
+  -H <span class="tok-str">"Content-Type: application/json"</span> \
+  -d <span class="tok-punct">'{</span>
+    <span class="tok-key">"model"</span><span class="tok-punct">:</span> <span class="tok-str">"glm-5.2"</span><span class="tok-punct">,</span>
+    <span class="tok-key">"messages"</span><span class="tok-punct">:</span> <span class="tok-punct">[</span>
+      <span class="tok-punct">{</span> <span class="tok-key">"role"</span><span class="tok-punct">:</span> <span class="tok-str">"user"</span><span class="tok-punct">,</span> <span class="tok-key">"content"</span><span class="tok-punct">:</span> <span class="tok-str">"..."</span> <span class="tok-punct">}</span>
+    <span class="tok-punct">]</span>
+  <span class="tok-punct">}'</span></div>
+              <div class="code-divider"></div>
+            </div>
+            <div class="code-body" style="padding-top:2px;">
+              <div class="code-label">RESPONSE</div>
+              <div class="code-block"><span class="tok-punct">{</span>
+  <span class="tok-key">"choices"</span><span class="tok-punct">:</span> <span class="tok-punct">[{</span> <span class="tok-key">"message"</span><span class="tok-punct">:</span> <span class="tok-punct">{</span><span class="tok-key">"content"</span><span class="tok-punct">:</span> <span class="tok-str">"Hi there!"</span><span class="tok-punct">}</span> <span class="tok-punct">}],</span>
+  <span class="tok-key">"usage"</span><span class="tok-punct">:</span> <span class="tok-punct">{</span> <span class="tok-key">"prompt_tokens"</span><span class="tok-punct">:</span> <span class="tok-num">9</span><span class="tok-punct">,</span> <span class="tok-key">"completion_tokens"</span><span class="tok-punct">:</span> <span class="tok-num">12</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></div>
+            </div>
+            <div class="code-footer"> <span>118 MS</span><span
+                class="sep">·</span><span>21 TOKENS</span><span
+                class="sep">·</span><span>OPENAI 兼容</span> <span
+                class="right-tag">STREAM · SSE</span> </div>
+          </div>
+        </div>
+      </main>
     </div>
-  </section>
-
-  <!-- 模型 -->
-  <section id="models">
-    <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-num">03</span><h2>可用模型</h2></div>
-      <blockquote class="reveal">以下为示例，<strong style="color:var(--text)">实际可用模型与名称以系统「模型」页面显示为准</strong>，由学院按采购情况动态开通。</blockquote>
-      <div class="tbl-wrap reveal">
-        <table>
-          <thead><tr><th>能力类型</th><th>典型模型</th><th>适用场景</th></tr></thead>
-          <tbody>
-            <tr><td>通用对话</td><td><code>gpt-4o</code> <code>claude-…</code> <code>deepseek-chat</code></td><td>答疑、写作、资料整理</td></tr>
-            <tr><td>代码</td><td><code>…-coder</code></td><td>编程作业、代码补全与解释</td></tr>
-            <tr><td>推理</td><td><code>…-reasoning</code></td><td>数学、逻辑、复杂分析</td></tr>
-            <tr><td>向量 / Embedding</td><td><code>text-embedding-…</code></td><td>检索、RAG、语义匹配</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="reveal" style="margin-top:16px">调用前可在「模型」页面查看每个模型的<strong>计费倍率</strong>，据此估算消耗。</p>
-    </div>
-  </section>
-
-  <!-- 额度 -->
-  <section id="quota">
-    <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-num">04</span><h2>额度与用量</h2></div>
-      <ul class="feat reveal">
-        <li>每个账号拥有学院分配的<strong>额度（Quota）</strong>，调用按所用模型的 token 量与计费倍率扣减。</li>
-        <li>在控制台的 <strong>「数据看板」/「日志」</strong> 中可查看实时余额、历史用量与每次调用明细。</li>
-        <li>额度不足或令牌到期会导致调用失败（返回 <code>quota</code> / <code>expired</code> 相关错误），可在控制台申请续额或新建令牌。</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 规范 -->
-  <section id="policy" class="guard">
-    <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-num">05</span><h2>使用规范与数据安全</h2></div>
-      <blockquote class="reveal" style="border-left-color:var(--warn);background:rgba(245,180,84,.06)">本中枢面向教学科研开放，请共同维护合规、安全的使用环境。</blockquote>
-      <ul class="feat reveal">
-        <li><strong>令牌即密码</strong>：不要泄露、不要写死在源码里、不要提交到 Git 仓库。建议通过环境变量读取。</li>
-        <li><strong>数据合规</strong>：严禁将涉密信息、学生个人隐私（成绩、身份证、联系方式等）、未公开的科研数据上传给第三方模型处理。</li>
-        <li><strong>学术诚信</strong>：模型输出仅供辅助，课程作业与论文写作须遵守学院学术规范，不得直接抄袭生成内容。</li>
-        <li><strong>合理使用</strong>：额度为公共资源，请避免无意义的批量请求；批量任务请控制并发，必要时与管理员沟通。</li>
-        <li><strong>警惕注入</strong>：当让模型处理外部网页、文档、邮件等内容时，注意其中可能夹带的恶意指令，核对输出后再执行。</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 帮助 -->
-  <section id="help">
-    <div class="wrap">
-      <div class="sec-head reveal"><span class="sec-num">06</span><h2>获取帮助</h2></div>
-      <div class="help">
-        <div class="h reveal"><div class="t">DOCS · 文档公告</div><p>登录后查看系统首页公告栏，获取最新通知与使用文档。</p></div>
-        <div class="h reveal"><div class="t">SUPPORT · 技术支持</div><p class="todo">联系方式待补充</p></div>
-        <div class="h reveal"><div class="t">QUOTA · 额度申请</div><p class="todo">申请流程待补充</p></div>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  <div class="wrap">
-    <div class="f-en">GAI Token Service Hub</div>
-    <div class="f-zh">智能软件教学科研 GAI Token服务中枢</div>
-  </div>
-</footer>
-
-<script>
-  document.documentElement.classList.add('js');
-
-  // 滚动渐显
-  const io=new IntersectionObserver((es)=>{
-    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
-  },{threshold:.12});
-  document.querySelectorAll('.reveal').forEach((el,i)=>{
-    el.style.transitionDelay=(i%3)*60+'ms';
-    io.observe(el);
-  });
-
-  // 代码复制
-  function copyCode(btn){
-    const pre=btn.closest('.code').querySelector('pre');
-    navigator.clipboard.writeText(pre.innerText).then(()=>{
-      const t=btn.textContent;btn.textContent='已复制';btn.classList.add('done');
-      setTimeout(()=>{btn.textContent=t;btn.classList.remove('done')},1600);
-    });
-  }
-</script>
-</body>
+  </body>
 </html>
