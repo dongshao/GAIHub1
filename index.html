@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title>智能软件教学科研 GAI Token Hub · 使用指南</title>
+    <style>
+  :root{
+    color-scheme: dark;
+    --bg: #08090d;
+    --bg-panel: #12131a;
+    --border: rgba(255,255,255,0.08);
+    --text: #e7e8ee;
+    --text-dim: #8b8d9a;
+    --text-dimmer: #5f6170;
+    --purple: #8b5cf6;
+    --blue: #5b8cff;
+    --pink: #ec4899;
+    --amber: #f5b942;
+    --green: #34d399;
+
+    /* 随主题切换的表面色与强调色 */
+    --glow-1: rgba(139,92,246,0.10);
+    --glow-2: rgba(91,140,255,0.08);
+    --badge-bg: rgba(139,92,246,0.10);
+    --badge-border: rgba(139,92,246,0.35);
+    --badge-text: #c9b8ff;
+    --warn-bg: rgba(245,185,66,0.08);
+    --warn-border: rgba(245,185,66,0.30);
+    --warn-text: #e9d9b8;
+    --warn-strong: #f5b942;
+    --inline-code-bg: rgba(255,255,255,0.07);
+    --inline-code-text: #a8d8ff;
+    --btn-ghost-bg: rgba(255,255,255,0.04);
+    --link: #9db9ff;
+    /* 代码卡片在两种模式下都保持深色 */
+    --code-border: rgba(255,255,255,0.08);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      color-scheme: light;
+      --bg: #f6f7fb;
+      --bg-panel: #ffffff;
+      --border: rgba(18,20,40,0.10);
+      --text: #191b24;
+      --text-dim: #565b6d;
+      --text-dimmer: #8b8f9e;
+      --glow-1: rgba(139,92,246,0.14);
+      --glow-2: rgba(91,140,255,0.12);
+      --badge-bg: rgba(139,92,246,0.10);
+      --badge-border: rgba(139,92,246,0.30);
+      --badge-text: #6d28d9;
+      --warn-bg: rgba(245,185,66,0.14);
+      --warn-border: rgba(214,158,46,0.45);
+      --warn-text: #86540a;
+      --warn-strong: #b45309;
+      --inline-code-bg: rgba(18,20,40,0.05);
+      --inline-code-text: #2563eb;
+      --btn-ghost-bg: rgba(18,20,40,0.03);
+      --link: #4f6fe0;
+    }
+    h1 .grad{
+      background: linear-gradient(90deg, #7c3aed 0%, #2563eb 55%, #0d9488 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", Arial, sans-serif;
+    overflow: hidden;
+    background-image:
+      radial-gradient(ellipse 900px 600px at 8% 8%, var(--glow-1), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 96% 88%, var(--glow-2), transparent 60%);
+  }
+  .page{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 2.2vh 3.4vw;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.8vh;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .brand{ display:flex; align-items:center; gap: 12px; }
+  .logo{ width: 30px; height: 30px; flex-shrink:0; }
+  .brand-name{ font-size: 15px; font-weight: 600; letter-spacing: 0.2px; color: var(--text); }
+  .brand-name b{ font-weight: 700; background: linear-gradient(90deg,#c4b5fd,#93c5fd); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .header-tag{
+    font-size: 12px; color: var(--text-dimmer);
+    border: 1px solid var(--border); border-radius: 100px;
+    padding: 4px 12px; letter-spacing: 0.5px;
+  }
+
+  /* ---------- main layout ---------- */
+  main{
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 4vw;
+    align-items: center;
+    min-height: 0;
+    padding-top: 1vh;
+  }
+
+  .left{ display:flex; flex-direction:column; gap: 1.7vh; min-width:0; }
+
+  .badge{
+    display:inline-flex; align-items:center; gap:8px; width:fit-content;
+    font-size: 12.5px; color: var(--badge-text);
+    background: var(--badge-bg);
+    border: 1px solid var(--badge-border);
+    border-radius: 100px; padding: 5px 13px 5px 10px;
+  }
+  .badge .dot{ width:6px; height:6px; border-radius:50%; background: var(--purple); box-shadow: 0 0 8px var(--purple); }
+
+  h1{
+    font-size: clamp(26px, 3.1vw, 40px);
+    line-height: 1.28;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  h1 .grad{
+    background: linear-gradient(90deg, #a78bfa 0%, #7dabff 55%, #67d6d0 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  .lede{
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: var(--text-dim);
+    max-width: 56ch;
+  }
+  .lede b{ color: var(--text); font-weight: 600; }
+
+  .steps{ display:flex; flex-direction:column; gap: 10px; margin-top: 2px; }
+  .step{
+    display:flex; gap: 12px; align-items:flex-start;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .step .num{
+    flex-shrink:0; width: 20px; height: 20px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    color: #fff; font-size: 11.5px; font-weight: 700;
+    display:flex; align-items:center; justify-content:center;
+    margin-top: 1px;
+  }
+  .step .body{ font-size: 13.5px; line-height: 1.6; color: var(--text-dim); }
+  .step .body b{ color: var(--text); font-weight: 600; }
+  .step code{
+    background: var(--inline-code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: var(--inline-code-text);
+  }
+
+  .warn{
+    display:flex; gap: 10px; align-items:flex-start;
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .warn .icon{ color: var(--warn-strong); font-size: 15px; line-height: 1.5; flex-shrink:0; }
+  .warn .body{ font-size: 13.5px; line-height: 1.6; color: var(--warn-text); }
+  .warn b{ color: var(--warn-strong); font-weight: 700; }
+
+  .actions{ display:flex; align-items:center; gap: 12px; margin-top: 4px; flex-wrap: wrap; }
+  .btn{
+    font-size: 13.5px; font-weight: 600;
+    padding: 10px 20px; border-radius: 9px;
+    text-decoration: none;
+    display:inline-flex; align-items:center; gap:7px;
+    transition: transform .15s ease, opacity .15s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); }
+  .btn-ghost{
+    background: var(--btn-ghost-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .feedback-note{ font-size: 12px; color: var(--text-dimmer); }
+  .feedback-note a{ color: var(--link); text-decoration:none; }
+
+  /* ---------- right code panel ---------- */
+  .right{ height:100%; display:flex; align-items:center; min-width:0; }
+  .code-card{
+    width: 100%;
+    background: #0d0e14;
+    border: 1px solid var(--code-border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -30px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.02);
+  }
+  .code-tabs{
+    display:flex; align-items:center; gap: 22px;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--code-border);
+    font-size: 13px;
+  }
+  .code-tabs .tab{ color: var(--text-dimmer); }
+  .code-tabs .tab.active{ color: #fff; font-weight: 600; position:relative; }
+  .code-tabs .tab.active::after{
+    content:""; position:absolute; left:0; right:0; bottom:-13px; height:2px;
+    background: linear-gradient(90deg, var(--purple), var(--blue));
+  }
+  .code-tabs .status{
+    margin-left:auto; display:flex; align-items:center; gap:6px;
+    font-size: 12px; color: var(--green); font-family: "SF Mono", Menlo, Consolas, monospace;
+  }
+  .code-tabs .status .dot{ width:6px; height:6px; border-radius:50%; background: var(--green); box-shadow:0 0 6px var(--green); }
+
+  .code-body{ padding: 16px 20px 8px; }
+  .code-label{ font-size: 10.5px; letter-spacing: 1.5px; color: var(--text-dimmer); margin-bottom: 8px; }
+  .code-block{
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12.3px; line-height: 1.72;
+    white-space: pre;
+  }
+  .tok-method{ color: #67d6d0; }
+  .tok-url{ color: #f5b942; }
+  .tok-flag{ color: #7dabff; }
+  .tok-str{ color: #f5b942; }
+  .tok-key{ color: #a78bfa; }
+  .tok-punct{ color: var(--text-dimmer); }
+  .tok-num{ color: #67d6d0; }
+  .tok-bool{ color: #ec4899; }
+  .tok-comment{ color: var(--text-dimmer); }
+
+  .code-divider{ height:1px; background: var(--code-border); margin: 14px 0 0; }
+
+  .code-footer{
+    display:flex; align-items:center; gap: 16px;
+    padding: 11px 20px; border-top: 1px solid var(--code-border);
+    font-size: 11.5px; color: var(--text-dimmer);
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+  }
+  .code-footer .sep{ color: rgba(255,255,255,0.15); }
+  .code-footer .right-tag{ margin-left:auto; letter-spacing: 1px; }
+
+  /* ---------- bottom footer: link to full guide ---------- */
+  .page-footer{
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;
+    margin-top: 1.5vh; padding-top: 1.6vh;
+    border-top: 1px solid var(--border);
+  }
+  .page-footer .pf-note{ font-size: 13px; color: var(--text-dim); }
+  .page-footer .pf-link{
+    display:inline-flex; align-items:center; gap:7px;
+    font-size: 13px; font-weight: 600; color:#fff; text-decoration:none;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    border-radius: 9px; padding: 8px 16px;
+    box-shadow: 0 10px 26px -12px rgba(139,92,246,0.65);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .page-footer .pf-link:hover{ transform: translateY(-1px); box-shadow: 0 14px 30px -12px rgba(139,92,246,0.8); }
+  .page-footer .pf-link svg{ width: 14px; height: 14px; flex-shrink:0; }
+</style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="brand">
+          <svg class="logo" viewBox="0 0 32 32" fill="none">
+            <defs>
+              <linearGradient id="lg" x1="0" y1="0" x2="32" y2="32">
+                <stop offset="0%" stop-color="#ec4899"></stop>
+                <stop offset="50%" stop-color="#8b5cf6"></stop>&nbsp; </linearGradient></defs></svg><span
+            class="brand-name"></span> </div>
+        <br>
+      </header>
+      <main>
+        <div class="left"> <span class="badge"><span class="dot"></span>面
+            向教学科研的统一大模型 API 平台</span>
+          <h1>三步获取密钥，<br>
+            <span class="grad">接入大语言模型</span></h1>
+          <p class="lede"> 为方便统一管理大模型 API 与配额，<b>南京大学软件学院、智能软件与工程学院</b>
+            基于开源软件 New API 部 署了本平台，为同学们分配独立的 API
+            密钥，支持调用多种主流大语言模型，用于教学与科研实验。 </p>
+          <div class="steps">
+            <div class="step"> <span class="num">1</span> <span
+                class="body"><b>API 端点地址</b>&nbsp;— 所有同学共用统一 Base URL：<code>https://njusehub.info/v1</code></span>
+            </div>
+            <div class="step"> <span class="num">2</span> <span
+                class="body"><b>API 密钥</b>&nbsp;— 登录控制台后在「API
+                密钥管理」页面创建，用于身份认证与用量统计</span> </div>
+            <div class="step"> <span class="num">3</span> <span
+                class="body"><b>模型 ID</b>&nbsp;— 在「模型广场」页面浏览可用模型并记录 ID，如
+                <code>glm-5.2</code>，需与客户端配置一致</span> </div>
+          </div>
+          <div class="warn"> <span class="icon">⚠</span> <span
+              class="body"><b>务必保管好你的 API 密钥</b>，切记不要将其上传至 GitHub 等外部平台。</span>
+          </div>
+          <div class="actions"> <a class="btn btn-ghost"
+              href="mailto:zengsheng@nju.edu.cn">问题反馈</a> <span
+              class="feedback-note">配置遇到问题？可先借助 Agent 排查；确认是后台问题请联系 <a
+                href="mailto:zengsheng@nju.edu.cn">zengsheng@nju.edu.cn</a></span>
+          </div>
+        </div>
+        <div class="right">
+          <div class="code-card">
+            <div class="code-tabs"> <span class="tab active">Chat</span>
+              <span class="tab">Embeddings</span> <span class="tab">Models</span>
+              <span class="status"><span class="dot"></span>200 OK</span>
+            </div>
+            <div class="code-body">
+              <div class="code-label">REQUEST</div>
+              <div class="code-block"><span class="tok-method">curl</span> -X <span class="tok-flag">POST</span> <span class="tok-str">"https://njusehub.info/v1/chat/completions"</span> \
+  -H <span class="tok-str">"Authorization: Bearer sk-••••••••"</span> \
+  -H <span class="tok-str">"Content-Type: application/json"</span> \
+  -d <span class="tok-punct">'{</span>
+    <span class="tok-key">"model"</span><span class="tok-punct">:</span> <span class="tok-str">"glm-5.2"</span><span class="tok-punct">,</span>
+    <span class="tok-key">"messages"</span><span class="tok-punct">:</span> <span class="tok-punct">[</span>
+      <span class="tok-punct">{</span> <span class="tok-key">"role"</span><span class="tok-punct">:</span> <span class="tok-str">"user"</span><span class="tok-punct">,</span> <span class="tok-key">"content"</span><span class="tok-punct">:</span> <span class="tok-str">"..."</span> <span class="tok-punct">}</span>
+    <span class="tok-punct">]</span>
+  <span class="tok-punct">}'</span></div>
+              <div class="code-divider"></div>
+            </div>
+            <div class="code-body" style="padding-top:2px;">
+              <div class="code-label">RESPONSE</div>
+              <div class="code-block"><span class="tok-punct">{</span>
+  <span class="tok-key">"choices"</span><span class="tok-punct">:</span> <span class="tok-punct">[{</span> <span class="tok-key">"message"</span><span class="tok-punct">:</span> <span class="tok-punct">{</span><span class="tok-key">"content"</span><span class="tok-punct">:</span> <span class="tok-str">"Hi there!"</span><span class="tok-punct">}</span> <span class="tok-punct">}],</span>
+  <span class="tok-key">"usage"</span><span class="tok-punct">:</span> <span class="tok-punct">{</span> <span class="tok-key">"prompt_tokens"</span><span class="tok-punct">:</span> <span class="tok-num">9</span><span class="tok-punct">,</span> <span class="tok-key">"completion_tokens"</span><span class="tok-punct">:</span> <span class="tok-num">12</span> <span class="tok-punct">}</span>
+<span class="tok-punct">}</span></div>
+            </div>
+            <div class="code-footer"> <span>118 MS</span><span
+                class="sep">·</span><span>21 TOKENS</span><span
+                class="sep">·</span><span>OPENAI 兼容</span> <span
+                class="right-tag">STREAM · SSE</span> </div>
+          </div>
+        </div>
+      </main>
+      <footer class="page-footer">
+        <span class="pf-note">需要完整的控制台配置与 Agent 客户端接入流程（含分步截图）？</span>
+        <a class="pf-link" href="njusehubdoc.html" target="_blank" rel="noopener">查看完整使用指南
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"></path></svg>
+        </a>
+      </footer>
+    </div>
+  </body>
+</html>
